@@ -1,20 +1,26 @@
 # Lakra Studio Website
 
-## Deploy on Vercel
+## Deploy on Vercel through GitHub
 
-1. Go to https://vercel.com/new
-2. Import your GitHub repository or upload this project.
-3. Framework preset: Vite
-4. Build command: npm run build
-5. Output directory: dist
-6. Click Deploy.
+1. Unzip this file.
+2. Create a GitHub repo, for example: lakra-studio.
+3. Upload the contents of the unzipped `lakra-studio` folder.
+4. Go to https://vercel.com/new
+5. Import the GitHub repo.
+6. Framework preset: Vite
+7. Build command: npm run build
+8. Output directory: dist
+9. Deploy.
 
-## Important
+## Passport photo order flow
 
-This version pins Tailwind CSS to v3.4.17 because Tailwind v4 changed the PostCSS plugin setup and can cause Vercel build failures.
+- Customer uploads photo.
+- Customer clicks Pay ₹50 Now using UPI ID: 9877080211@ptyes.
+- Customer confirms payment.
+- Order details and uploaded photo are sent to lakraslens@gmail.com through FormSubmit.
 
-## Local test
+Important: The first FormSubmit email may require inbox verification before future emails are delivered.
 
-npm install
-npm run build
-npm run dev
+## Note on automatic payment confirmation
+
+This version uses customer confirmation after UPI payment. True automatic payment verification requires a payment gateway such as Razorpay/Paytm Business with webhook integration.

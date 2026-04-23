@@ -59,7 +59,7 @@ const studio = {
   tagline: "Since 1898",
   location: "Main Bazaar, Moga, Punjab",
   phone: "+91 98765 43210",
-  email: "orders@yourstudio.com",
+  email: "lakraslens@gmail.com",
   upiId: "9877080211@ptyes",
   instagram: "https://www.instagram.com/lakra_studio_/",
   instagramHandle: "@lakra_studio_",
@@ -144,7 +144,7 @@ function SectionReveal({ children, className = "" }) {
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [fileName, setFileName] = useState("");
-  const [paid, setPaid] = useState(false);
+  const [paymentConfirmed, setPaymentConfirmed] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const checks = useMemo(
@@ -161,7 +161,10 @@ export default function App() {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault();
+    if (!paymentConfirmed) {
+      event.preventDefault();
+      return;
+    }
     setSubmitted(true);
   };
 
@@ -316,89 +319,88 @@ export default function App() {
           </div>
         </section>
 
-        <section id="passport" className="anchor-section mx-auto max-w-7xl px-5 py-12 md:py-20">
-          <div className="grid gap-8 lg:grid-cols-[.8fr_1.2fr]">
-            <SectionReveal className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.07] p-7 backdrop-blur-xl md:p-9">
-              <div className="absolute -right-16 -top-16 h-44 w-44 rounded-full bg-amber-300/20 blur-2xl pulse-glow" />
-              <div className="mb-5 inline-flex rounded-full bg-amber-300 px-4 py-2 text-sm font-black text-black">Limited quick-print offer</div>
-              <h2 className="text-4xl font-black tracking-tight md:text-5xl">Need passport photos right now?</h2>
-              <p className="mt-4 text-lg leading-8 text-white/70">
-                Upload your picture, pay ₹50 by UPI, and collect 32 passport-size photos from our Main Bazaar studio in around 10 minutes.
-              </p>
-              <div className="mt-7 grid gap-4">
-                {orderSteps.map(([icon, title, desc], index) => (
-                  <div key={title} className={`tilt-card flex gap-4 rounded-3xl border border-white/10 bg-black/25 p-4 animate-[fadeUp_.8s_ease_both] stagger-${index + 1}`}>
-                    <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white text-black"><Icon name={icon} className="h-5 w-5" /></div>
-                    <div>
-                      <p className="font-black">{title}</p>
-                      <p className="text-sm text-white/60">{desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </SectionReveal>
+        <section id="passport" className="anchor-section mx-auto max-w-4xl px-5 py-12 md:py-20">
+          <SectionReveal>
+            <form
+              className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/12 to-white/5 p-5 shadow-2xl backdrop-blur-xl md:p-8"
+              action="https://formsubmit.co/lakraslens@gmail.com"
+              method="POST"
+              encType="multipart/form-data"
+              onSubmit={handleSubmit}
+            >
+              <input type="hidden" name="_subject" value="New Lakra Studio ₹50 Passport Photo Order" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="_template" value="table" />
+              <input type="hidden" name="order_note" value="Customer confirmed UPI payment and requested 10-minute pickup." />
 
-            <SectionReveal>
-              <form className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/12 to-white/5 p-5 shadow-2xl backdrop-blur-xl md:p-8" onSubmit={handleSubmit}>
-                <div className="absolute -left-20 top-10 h-40 w-40 rounded-full bg-pink-400/20 blur-2xl pulse-glow" />
-                <div className="absolute -right-20 bottom-10 h-40 w-40 rounded-full bg-violet-400/20 blur-2xl pulse-glow" />
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-sm font-bold uppercase tracking-[0.2em] text-pink-200">Online Order</p>
-                    <h3 className="mt-2 text-3xl font-black">Upload photo for print</h3>
-                  </div>
-                  <div className="rounded-2xl bg-amber-300 p-3 text-black"><Icon name="rupee" className="h-6 w-6" /></div>
-                </div>
+              <div className="absolute -left-20 top-10 h-40 w-40 rounded-full bg-pink-400/20 blur-2xl pulse-glow" />
+              <div className="absolute -right-20 bottom-10 h-40 w-40 rounded-full bg-violet-400/20 blur-2xl pulse-glow" />
 
-                <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                  <input className="rounded-2xl border border-white/10 bg-black/30 px-4 py-4 text-white outline-none placeholder:text-white/35 focus:border-amber-200" placeholder="Your name" />
-                  <input className="rounded-2xl border border-white/10 bg-black/30 px-4 py-4 text-white outline-none placeholder:text-white/35 focus:border-amber-200" placeholder="Mobile number" />
-                </div>
-
-                <label className="mt-5 grid cursor-pointer place-items-center rounded-[1.5rem] border border-dashed border-white/25 bg-black/25 p-8 text-center hover:border-amber-200">
-                  <Icon name="upload" className="mb-3 h-10 w-10 text-amber-200" />
-                  <p className="text-lg font-black">Upload your photo</p>
-                  <p className="mt-1 text-sm text-white/55">JPG, PNG or HEIC from phone camera</p>
-                  <input type="file" accept="image/*" className="hidden" onChange={(event) => setFileName(event.target.files?.[0]?.name || "")} />
-                  {fileName && <p className="mt-3 rounded-full bg-white/10 px-4 py-2 text-sm text-emerald-200">Selected: {fileName}</p>}
-                </label>
-
-                <div className="mt-5 rounded-[1.5rem] border border-amber-300/25 bg-amber-300/10 p-5">
-                  <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-                    <div>
-                      <p className="font-black text-amber-100">Pay ₹50 by UPI</p>
-                      <p className="text-sm text-white/60">UPI ID: {studio.upiId}</p>
-                    </div>
-                    <div className="flex gap-3 flex-wrap">
-                      <a href={generateUPILink()} className="rounded-full bg-green-400 px-6 py-3 font-black text-black hover:bg-green-300">
-                        Pay ₹50 (UPI)
-                      </a>
-                      <button type="button" onClick={() => setPaid(true)} className="rounded-full bg-amber-300 px-6 py-3 font-black text-black hover:bg-amber-200">
-                        I Paid
-                      </button>
-                    </div>
-                  </div>
-                  {paid && (
-                    <div className="mt-4 flex items-center gap-2 rounded-2xl bg-emerald-400/15 p-3 text-sm text-emerald-200">
-                      <Icon name="check" className="h-5 w-5" /> Payment marked. In live version, we can verify with UPI screenshot/order note.
-                    </div>
-                  )}
-                </div>
-
-                <button className="mt-5 w-full rounded-2xl bg-gradient-to-r from-pink-500 to-violet-500 px-6 py-4 text-lg font-black shadow-xl shadow-violet-900/30">
-                  Submit Order
-                </button>
-                {submitted && (
-                  <p className="mt-4 rounded-2xl bg-emerald-400/15 p-3 text-center text-sm text-emerald-200">
-                    Test order submitted. Live version will send the image and customer details to {studio.email}.
-                  </p>
-                )}
-                <p className="mt-4 text-center text-xs leading-5 text-white/45">
-                  Demo note: live upload can send photo + details to {studio.email} using Formspree, Netlify Forms, EmailJS, or a custom backend.
+              <div className="relative z-10 text-center">
+                <div className="mx-auto mb-5 inline-flex rounded-full bg-amber-300 px-4 py-2 text-sm font-black text-black">₹50 Passport Photo Order</div>
+                <h2 className="text-4xl font-black tracking-tight md:text-5xl">Upload. Pay. Pick up in 10 minutes.</h2>
+                <p className="mx-auto mt-4 max-w-2xl text-lg leading-8 text-white/70">
+                  Send your photo to Lakra Photo Studio, pay ₹50 by UPI, then submit the order. The photo and customer details will be emailed to {studio.email}.
                 </p>
-              </form>
-            </SectionReveal>
-          </div>
+              </div>
+
+              <div className="relative z-10 mt-8 grid gap-4 sm:grid-cols-2">
+                <input required name="customer_name" className="rounded-2xl border border-white/10 bg-black/30 px-4 py-4 text-white outline-none placeholder:text-white/35 focus:border-amber-200" placeholder="Your name" />
+                <input required name="mobile_number" className="rounded-2xl border border-white/10 bg-black/30 px-4 py-4 text-white outline-none placeholder:text-white/35 focus:border-amber-200" placeholder="Mobile number" />
+              </div>
+
+              <label className="relative z-10 mt-5 grid cursor-pointer place-items-center rounded-[1.5rem] border border-dashed border-white/25 bg-black/25 p-8 text-center hover:border-amber-200">
+                <Icon name="upload" className="mb-3 h-10 w-10 text-amber-200" />
+                <p className="text-lg font-black">Upload passport photo</p>
+                <p className="mt-1 text-sm text-white/55">JPG, PNG or HEIC from phone camera</p>
+                <input required name="attachment" type="file" accept="image/*" className="hidden" onChange={(event) => setFileName(event.target.files?.[0]?.name || "")} />
+                {fileName && <p className="mt-3 rounded-full bg-white/10 px-4 py-2 text-sm text-emerald-200">Selected: {fileName}</p>}
+              </label>
+
+              <div className="relative z-10 mt-5 rounded-[1.5rem] border border-amber-300/25 bg-amber-300/10 p-5">
+                <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+                  <div>
+                    <p className="font-black text-amber-100">Step 1: Pay ₹50 by UPI</p>
+                    <p className="text-sm text-white/60">UPI ID: {studio.upiId}</p>
+                  </div>
+                  <a
+                    href={generateUPILink()}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-full bg-green-400 px-6 py-3 text-center font-black text-black hover:bg-green-300"
+                  >
+                    Pay ₹50 Now
+                  </a>
+                </div>
+                <p className="mt-3 text-xs leading-5 text-white/50">
+                  If your phone opens WhatsApp instead of GPay/PhonePe/Paytm, your phone has WhatsApp set as the default UPI handler. Long-press/copy the UPI ID above or change the default UPI app in phone settings.
+                </p>
+              </div>
+
+              <label className="relative z-10 mt-5 flex cursor-pointer gap-3 rounded-2xl border border-white/10 bg-black/25 p-4 text-sm text-white/75">
+                <input
+                  type="checkbox"
+                  required
+                  checked={paymentConfirmed}
+                  onChange={(event) => setPaymentConfirmed(event.target.checked)}
+                  className="mt-1 h-5 w-5 accent-amber-300"
+                />
+                <span>I confirm that I completed the ₹50 UPI payment to {studio.upiId}. Send my photo order to Lakra Studio for 10-minute pickup.</span>
+              </label>
+
+              <button className="relative z-10 mt-5 w-full rounded-2xl bg-gradient-to-r from-pink-500 to-violet-500 px-6 py-4 text-lg font-black shadow-xl shadow-violet-900/30 disabled:opacity-50">
+                Confirm Payment & Email Order
+              </button>
+              {submitted && (
+                <p className="relative z-10 mt-4 rounded-2xl bg-emerald-400/15 p-3 text-center text-sm text-emerald-200">
+                  Order sent. Your 32 passport-size photos will be ready to pick up in about 10 minutes.
+                </p>
+              )}
+              <p className="relative z-10 mt-4 text-center text-xs leading-5 text-white/45">
+                First submission may ask Lakra Studio to verify the FormSubmit email once. After that, orders go directly to {studio.email}.
+              </p>
+            </form>
+          </SectionReveal>
         </section>
 
         <section id="services" className="anchor-section mx-auto max-w-7xl px-5 py-12 md:py-20">
